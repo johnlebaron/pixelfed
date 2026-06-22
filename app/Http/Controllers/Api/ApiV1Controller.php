@@ -2468,8 +2468,10 @@ class ApiV1Controller extends Controller
         }
 
         $since = $request->input('since_id');
-        $min = $request->input('min_id');
         $max = $request->input('max_id');
+        $max = $max === '' ? null : $max;
+        $min = $request->input('min_id');
+        $min = $min === '' ? null : $min;
         $pe = $request->filled('_pe');
 
         if (! $since && ! $min && ! $max) {
@@ -2605,8 +2607,8 @@ class ApiV1Controller extends Controller
 
         $this->validate($request, [
             'page' => 'sometimes|integer|max:40',
-            'min_id' => 'sometimes|integer|min:0|max:'.PHP_INT_MAX,
-            'max_id' => 'sometimes|integer|min:0|max:'.PHP_INT_MAX,
+            'min_id' => 'nullable|integer|min:0|max:'.PHP_INT_MAX,
+            'max_id' => 'nullable|integer|min:0|max:'.PHP_INT_MAX,
             'limit' => 'sometimes|integer|min:1',
             'include_reblogs' => 'sometimes',
         ]);
@@ -2615,6 +2617,8 @@ class ApiV1Controller extends Controller
         $page = $request->input('page');
         $min = $request->input('min_id');
         $max = $request->input('max_id');
+        $min = ($min === '' || $min === null) ? null : (int) $min;
+        $max = ($max === '' || $max === null) ? null : (int) $max;
         $limit = $request->input('limit') ?? 20;
         if ($limit > 40) {
             $limit = 40;
