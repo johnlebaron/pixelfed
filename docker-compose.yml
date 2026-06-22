@@ -1,7 +1,7 @@
 services:
 ## MariaDB and Redis (optional)
   db:
-    image: mysql:9
+    image: mysql:8
     container_name: pixelfed-db
     restart: unless-stopped
     env_file:
@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
-      - ./mysql-9-data:/var/lib/mysql
+      - ./mysql-8-data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
@@ -69,7 +69,7 @@ services:
       AUTORUN_LARAVEL_CONFIG_CACHE: "true"
 
     volumes:
-      - ./storage:/var/www/html/storage
+      - /mnt/pixelfed-storage:/var/www/html/storage
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
     depends_on:
       - db
@@ -100,7 +100,7 @@ services:
       PHP_UPLOAD_MAX_FILE_SIZE: "500M"
       PHP_OPCACHE_ENABLE: "1"
     volumes:
-      - ./storage:/var/www/html/storage
+      - /mnt/pixelfed-storage:/var/www/html/storage
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
     depends_on:
       - db
@@ -137,7 +137,7 @@ services:
       PHP_UPLOAD_MAX_FILE_SIZE: "500M"
       PHP_OPCACHE_ENABLE: "1"
     volumes:
-      - ./storage:/var/www/html/storage
+      - /mnt/pixelfed-storage:/var/www/html/storage
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
     depends_on:
       - db
