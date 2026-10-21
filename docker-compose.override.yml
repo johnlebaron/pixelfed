@@ -1,0 +1,24 @@
+# Local deployment overrides (merged automatically by `docker compose`).
+# Kept separate from upstream's docker-compose.yml so upstream updates to that
+# file never conflict with these settings.
+
+services:
+  # MySQL 9 rejects md5() in generated columns (pulse migration), so stay on 8.
+  db:
+    image: mysql:8
+    volumes:
+      - ./mysql-8-data:/var/lib/mysql
+
+  # Media/storage lives on a separate mount. Same container path as upstream,
+  # so this replaces upstream's ./storage bind mount rather than adding to it.
+  pixelfed:
+    volumes:
+      - /mnt/pixelfed-storage:/var/www/html/storage
+
+  horizon:
+    volumes:
+      - /mnt/pixelfed-storage:/var/www/html/storage
+
+  scheduler:
+    volumes:
+      - /mnt/pixelfed-storage:/var/www/html/storage

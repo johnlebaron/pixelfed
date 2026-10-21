@@ -10,6 +10,7 @@ storage/app/story_archives/
 bootstrap/cache/*
 tests/
 # Docker
+mysql-8-data/
 mysql-9-data/
 mariadb-11-data/
 redis-data/
