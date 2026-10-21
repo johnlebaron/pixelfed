@@ -110,6 +110,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'throttle:api',
             'bindings',
             GrantFirstPartyToken::class,
+            // Local hardening: also gate the API when RESTRICTED_INSTANCE=true
+            // (upstream only restricts the web group).
+            'restricted',
         ]);
 
         $middleware->preventRequestForgery(except: [

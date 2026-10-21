@@ -73,6 +73,14 @@ return [
     'restricted' => [
         'enabled' => env('RESTRICTED_INSTANCE', false),
         'level' => 1,
+
+        // Extra path patterns (Request::is() syntax, '*' wildcard) to keep
+        // publicly reachable while the instance is restricted. Merged with the
+        // built-in allowlist in App\Http\Middleware\RestrictedAccess.
+        // Example: RESTRICTED_INSTANCE_ALLOWED_PATHS=".well-known/*,api/v1/instance/peers"
+        'allowed_paths' => array_filter(
+            explode(',', (string) env('RESTRICTED_INSTANCE_ALLOWED_PATHS', ''))
+        ),
     ],
 
     'oauth' => [
